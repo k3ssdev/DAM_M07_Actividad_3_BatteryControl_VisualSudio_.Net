@@ -40,11 +40,12 @@ namespace DAM_M07_ACT_03_Alberto_Perez_del_Rio
             get { return _chargeLevel; }
             set
             {
+                //Control de rango de valores
                 _chargeLevel = value;
                 if (_chargeLevel < 0) _chargeLevel = 0;
                 if (_chargeLevel > 100) _chargeLevel = 100;
-                // Cambia el color de la batería si la carga es menor o igual al 10%, pero mayor que 0
-                
+
+                // Control de estados de carga
                 if (_chargeLevel <= 10 && _chargeLevel > 0)
                 {
                     _isLow = true;
@@ -63,18 +64,18 @@ namespace DAM_M07_ACT_03_Alberto_Perez_del_Rio
                     _isDepleted = false;
                 }
 
-                Invalidate();
+                Invalidate(); // Fuerza la actualización visual al cambiar el estado
             }
         }
 
-        // Propiedad para controlar el color de la batería cuando está agotada, si no se establece ningún color, se usará el color rojo, le afecta cuando esta por debajo del 10%
+        // Propiedad para controlar el color de la batería cuando está agotada
         public bool IsDepleted
         {
             get { return _isDepleted; }
             set
             {
                 _isDepleted = value;
-                Invalidate();
+                Invalidate(); // Fuerza la actualización visual al cambiar el estado
             }
         }
 
@@ -85,9 +86,10 @@ namespace DAM_M07_ACT_03_Alberto_Perez_del_Rio
             set
             {
                 _isCharging = value;
-                Invalidate();
+                Invalidate(); // Fuerza la actualización visual al cambiar el estado
             }
         }
+
         #endregion
 
         #region Eventos
@@ -100,6 +102,7 @@ namespace DAM_M07_ACT_03_Alberto_Perez_del_Rio
         }
 
         #region "Dibuja bateria"
+
         // Evento que pintará la batería
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -126,7 +129,7 @@ namespace DAM_M07_ACT_03_Alberto_Perez_del_Rio
             // Pinta la base de la batería
             g.DrawImage(DAM_M07_ACT_03_Alberto_Perez_del_Rio.Resource1._base, 0, 0, 150, 300); // Pinta la base de la batería
 
-            // Controla el mensaje que se mostrará en la batería y la imagen que se pintará
+            // Controla el comportamiento cuando está cargando
             if (_isCharging)
             {
                 _isDepleted = false;
@@ -137,29 +140,30 @@ namespace DAM_M07_ACT_03_Alberto_Perez_del_Rio
                 g.DrawImage(DAM_M07_ACT_03_Alberto_Perez_del_Rio.Resource1.carga, 0, 0, 150, 300); // Pinta la base de la batería
 
             }
-
+            // Controla el comportamiento con bateria baja
             if (_isLow)
             {
-     
+                // Pinta el rectangulo con color rojo
                 g.FillRectangle(new SolidBrush(_lowBatteryColor), left, top + height - chargeHeight, width, chargeHeight);
             }
 
-            if (_isDepleted) // Si la batería está agotada
+            // Si la batería está agotada
+            if (_isDepleted)
             {
                 _isCharging = false;
                 _chargeLevel = 0;
                 _message = "Agotada";
-                g.DrawImage(DAM_M07_ACT_03_Alberto_Perez_del_Rio.Resource1.agotada, 0, 0, 150, 300); 
-                
-            }
+                g.DrawImage(DAM_M07_ACT_03_Alberto_Perez_del_Rio.Resource1.agotada, 0, 0, 150, 300); // Imagen de bateria agotada
 
+            }
+            // En caso de no estar cargando ni agotada
             if (!_isCharging && !_isDepleted) // En caso de que no este cargando ni agotada
             {
                 _message = "";
                 _isLow = false;
                 g.DrawImage(DAM_M07_ACT_03_Alberto_Perez_del_Rio.Resource1._base, 0, 0, 150, 300); // Pinta la base de la batería
 
-                // Habilita el control para que se pueda cambiar el porcentaje con el raton
+                // Habilita el control
                 this.Enabled = true;
             }
 
@@ -192,8 +196,8 @@ namespace DAM_M07_ACT_03_Alberto_Perez_del_Rio
             // Cambia el estado de la batería entre cargando y no cargando y viceversa
             IsCharging = !IsCharging;
 
-            // si la bateria esta agotada, ponle 1%
-                if (_isDepleted)
+            // si la bateria esta agotada, sube un 1%
+            if (_isDepleted)
             {
                 _chargeLevel = 1;
             }
