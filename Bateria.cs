@@ -148,8 +148,6 @@ namespace DAM_M07_ACT_03_Alberto_Perez_del_Rio
             {
                 _isCharging = false;
                 _chargeLevel = 0;
-                // rellena la batería de rojo
-                g.FillRectangle(new SolidBrush(_lowBatteryColor), left, top, width, height);
                 _message = "Agotada";
                 g.DrawImage(DAM_M07_ACT_03_Alberto_Perez_del_Rio.Resource1.agotada, 0, 0, 150, 300); 
                 
