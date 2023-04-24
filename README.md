@@ -1,4 +1,4 @@
-# Descripción del proyecto
+# [DAM][M07] Actividad 3 - UserControl .NET - Control de batería
 
 Este proyecto consiste en la implementación de un UserControl en C# para representar una batería. La batería se puede cargar o descargarse arrastrando el ratón por el control. Además, se pueden establecer diferentes colores para la batería en función del nivel de carga, si está cargando o si está agotada.
 
